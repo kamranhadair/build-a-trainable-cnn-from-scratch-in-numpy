@@ -12,8 +12,11 @@ import numpy as np
 def argmax_rows(x):
     return np.argmax(x, axis=1)
 
-# Step 2 - row_max (not yet solved)
-# TODO: implement
+# Step 2 - row_max
+import numpy as np
+
+def row_max(matrix):
+    return np.max(matrix, axis=1, keepdims=True)
 
 # Step 3 - row_sum (not yet solved)
 # TODO: implement
