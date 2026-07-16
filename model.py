@@ -66,8 +66,11 @@ def accuracy(predictions, labels):
     preds = argmax_rows(predictions)
     return np.mean(preds == labels)
 
-# Step 10 - he_std (not yet solved)
-# TODO: implement
+# Step 10 - he_std
+import numpy as np
+
+def he_std(fan_in):
+    return float(np.sqrt(2.0 / fan_in))
 
 # Step 11 - he_init (not yet solved)
 # TODO: implement
