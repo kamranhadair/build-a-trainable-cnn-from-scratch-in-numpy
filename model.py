@@ -251,8 +251,37 @@ def conv2d_grad_input(d_out, cache):
 
     return dx
 
-# Step 19 - conv2d_grad_weights (not yet solved)
-# TODO: implement
+# Step 19 - conv2d_grad_weights
+import numpy as np
+
+def conv2d_grad_weights(d_out, cache):
+    """
+    Compute gradient with respect to convolution weights.
+
+    Args:
+        d_out: Upstream gradient of shape (N, C_out, out_h, out_w)
+        cache: Dictionary returned by conv2d_forward
+
+    Returns:
+        dW: Gradient with respect to weights, same shape as cache["weights"]
+    """
+    cols = cache["cols"]
+    W = cache["weights"]
+    kernel_h = cache["kernel_h"]
+    kernel_w = cache["kernel_w"]
+
+    C_out, C_in, _, _ = W.shape
+
+    # (N*out_h*out_w, C_out)
+    d_out_cols = d_out.transpose(0, 2, 3, 1).reshape(-1, C_out)
+
+    # (C_out, C_in*kernel_h*kernel_w)
+    dW = d_out_cols.T @ cols
+
+    # Reshape back to original filter layout
+    dW = dW.reshape(C_out, C_in, kernel_h, kernel_w)
+
+    return dW
 
 # Step 20 - conv2d_grad_bias (not yet solved)
 # TODO: implement
