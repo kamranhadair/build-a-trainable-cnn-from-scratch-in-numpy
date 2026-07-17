@@ -318,8 +318,52 @@ def conv2d_backward(d_out, cache):
 
     return dx, dW, db
 
-# Step 22 - maxpool2d_forward (not yet solved)
-# TODO: implement
+# Step 22 - maxpool2d_forward
+import numpy as np
+
+def maxpool2d_forward(x, kernel=2, stride=2):
+    """
+    Forward pass for 2D max pooling.
+
+    Args:
+        x: Input of shape (N, C, H, W)
+        kernel: Pooling kernel size
+        stride: Pooling stride
+
+    Returns:
+        out: Output of shape (N, C, out_h, out_w)
+        cache: Dictionary containing values needed for backward pass
+    """
+    N, C, H, W = x.shape
+
+    out_h = output_spatial_size(H, kernel, stride, 0)
+    out_w = output_spatial_size(W, kernel, stride, 0)
+
+    out = np.zeros((N, C, out_h, out_w), dtype=x.dtype)
+    argmax = np.zeros((N, C, out_h, out_w), dtype=np.int64)
+
+    for i in range(out_h):
+        h_start = i * stride
+        h_end = h_start + kernel
+
+        for j in range(out_w):
+            w_start = j * stride
+            w_end = w_start + kernel
+
+            window = x[:, :, h_start:h_end, w_start:w_end]
+            window_flat = window.reshape(N, C, -1)
+
+            argmax[:, :, i, j] = np.argmax(window_flat, axis=2)
+            out[:, :, i, j] = np.max(window_flat, axis=2)
+
+    cache = {
+        "x_shape": x.shape,
+        "argmax": argmax,
+        "kernel": kernel,
+        "stride": stride,
+    }
+
+    return out, cache
 
 # Step 23 - scatter_grad_window (not yet solved)
 # TODO: implement
