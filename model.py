@@ -365,8 +365,30 @@ def maxpool2d_forward(x, kernel=2, stride=2):
 
     return out, cache
 
-# Step 23 - scatter_grad_window (not yet solved)
-# TODO: implement
+# Step 23 - scatter_grad_window
+import numpy as np
+
+def scatter_grad_window(grad, argmax_index, kernel):
+    """
+    Place the upstream gradient at the argmax position within a
+    (kernel x kernel) window.
+
+    Args:
+        grad: Scalar upstream gradient.
+        argmax_index: Flat index (row-major) of the max element.
+        kernel: Pooling kernel size.
+
+    Returns:
+        A (kernel, kernel) array with grad at the argmax position.
+    """
+    window = np.zeros((kernel, kernel), dtype=float)
+
+    row = argmax_index // kernel
+    col = argmax_index % kernel
+
+    window[row, col] = grad
+
+    return window
 
 # Step 24 - maxpool2d_backward (not yet solved)
 # TODO: implement
