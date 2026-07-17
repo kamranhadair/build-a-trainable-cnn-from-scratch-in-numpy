@@ -207,8 +207,49 @@ def conv2d_forward(x, W, b, stride=1, padding=0):
 
     return out, cache
 
-# Step 18 - conv2d_grad_input (not yet solved)
-# TODO: implement
+# Step 18 - conv2d_grad_input
+import numpy as np
+
+def conv2d_grad_input(d_out, cache):
+    """
+    Backpropagate through the convolution with respect to the input.
+
+    Args:
+        d_out: Upstream gradient of shape (N, C_out, out_h, out_w)
+        cache: Dictionary returned by conv2d_forward
+
+    Returns:
+        dx: Gradient with respect to the input x
+    """
+    x_shape = cache["x_shape"]
+    W = cache["weights"]
+    stride = cache["stride"]
+    padding = cache["padding"]
+    kernel_h = cache["kernel_h"]
+    kernel_w = cache["kernel_w"]
+
+    N, C_out, out_h, out_w = d_out.shape
+
+    # (N*out_h*out_w, C_out)
+    d_out_cols = d_out.transpose(0, 2, 3, 1).reshape(-1, C_out)
+
+    # (C_out, C_in*kernel_h*kernel_w)
+    W_cols = W.reshape(C_out, -1)
+
+    # Gradient with respect to im2col output
+    d_cols = d_out_cols @ W_cols
+
+    # Fold columns back into image
+    dx = col2im(
+        d_cols,
+        x_shape,
+        kernel_h,
+        kernel_w,
+        stride,
+        padding
+    )
+
+    return dx
 
 # Step 19 - conv2d_grad_weights (not yet solved)
 # TODO: implement
