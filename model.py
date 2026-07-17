@@ -390,8 +390,49 @@ def scatter_grad_window(grad, argmax_index, kernel):
 
     return window
 
-# Step 24 - maxpool2d_backward (not yet solved)
-# TODO: implement
+# Step 24 - maxpool2d_backward
+import numpy as np
+
+def maxpool2d_backward(d_out, cache):
+    """
+    Backward pass for 2D max pooling.
+
+    Args:
+        d_out: Upstream gradient of shape (N, C, out_h, out_w)
+        cache: Dictionary from maxpool2d_forward
+
+    Returns:
+        dx: Gradient with respect to the input, shape (N, C, H, W)
+    """
+    x_shape = cache["x_shape"]
+    argmax = cache["argmax"]
+    kernel = cache["kernel"]
+    stride = cache["stride"]
+
+    N, C, H, W = x_shape
+    _, _, out_h, out_w = d_out.shape
+
+    dx = np.zeros(x_shape, dtype=d_out.dtype)
+
+    for n in range(N):
+        for c in range(C):
+            for i in range(out_h):
+                h_start = i * stride
+                h_end = h_start + kernel
+
+                for j in range(out_w):
+                    w_start = j * stride
+                    w_end = w_start + kernel
+
+                    grad_window = scatter_grad_window(
+                        d_out[n, c, i, j],
+                        argmax[n, c, i, j],
+                        kernel
+                    )
+
+                    dx[n, c, h_start:h_end, w_start:w_end] += grad_window
+
+    return dx
 
 # Step 25 - relu_forward (not yet solved)
 # TODO: implement
