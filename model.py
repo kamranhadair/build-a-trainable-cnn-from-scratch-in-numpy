@@ -155,8 +155,57 @@ def col2im(cols, input_shape, kernel_h, kernel_w, stride=1, padding=0):
         return img[:, :, padding:-padding, padding:-padding]
     return img
 
-# Step 17 - conv2d_forward (not yet solved)
-# TODO: implement
+# Step 17 - conv2d_forward
+import numpy as np
+
+def conv2d_forward(x, W, b, stride=1, padding=0):
+    """
+    Perform 2D convolution using the im2col trick.
+
+    Args:
+        x: Input tensor of shape (N, C_in, H, W)
+        W: Weights of shape (C_out, C_in, kernel_h, kernel_w)
+        b: Bias of shape (C_out,)
+        stride: Stride
+        padding: Padding
+
+    Returns:
+        out: Output tensor of shape (N, C_out, out_h, out_w)
+        cache: Values needed for backward pass
+    """
+    N, C_in, H, W_in = x.shape
+    C_out, _, kernel_h, kernel_w = W.shape
+
+    # Output spatial dimensions
+    out_h = output_spatial_size(H, kernel_h, stride, padding)
+    out_w = output_spatial_size(W_in, kernel_w, stride, padding)
+
+    # Convert input to columns
+    cols = im2col(x, kernel_h, kernel_w, stride, padding)
+
+    # Flatten filters
+    W_col = W.reshape(C_out, -1)
+
+    # Convolution
+    out = cols @ W_col.T
+    out += b
+
+    # Reshape to (N, C_out, out_h, out_w)
+    out = out.reshape(N, out_h, out_w, C_out)
+    out = out.transpose(0, 3, 1, 2)
+
+    # Cache for backward pass
+    cache = {
+        "x_shape": x.shape,
+        "weights": W,
+        "cols": cols,
+        "stride": stride,
+        "padding": padding,
+        "kernel_h": kernel_h,
+        "kernel_w": kernel_w,
+    }
+
+    return out, cache
 
 # Step 18 - conv2d_grad_input (not yet solved)
 # TODO: implement
