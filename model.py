@@ -298,8 +298,25 @@ def conv2d_grad_bias(d_out):
     """
     return np.sum(d_out, axis=(0, 2, 3))
 
-# Step 21 - conv2d_backward (not yet solved)
-# TODO: implement
+# Step 21 - conv2d_backward
+import numpy as np
+
+def conv2d_backward(d_out, cache):
+    """
+    Compute gradients of a 2D convolution layer.
+
+    Args:
+        d_out: Upstream gradient of shape (N, C_out, out_h, out_w)
+        cache: Cache returned by conv2d_forward
+
+    Returns:
+        (dx, dW, db)
+    """
+    dx = conv2d_grad_input(d_out, cache)
+    dW = conv2d_grad_weights(d_out, cache)
+    db = conv2d_grad_bias(d_out)
+
+    return dx, dW, db
 
 # Step 22 - maxpool2d_forward (not yet solved)
 # TODO: implement
