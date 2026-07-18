@@ -1120,8 +1120,68 @@ def backward_classifier_block(dout, cache):
         }
     }
 
-# Step 50 - lenet_backward (not yet solved)
-# TODO: implement
+# Step 50 - lenet_backward
+import numpy as np
+
+def lenet_backward(dlogits, caches):
+    """
+    Full LeNet backward pass.
+
+    Args:
+        dlogits: Gradient with respect to logits.
+        caches: Dictionary from lenet_forward containing:
+            block1, block2, classifier
+
+    Returns:
+        grads: Dictionary containing gradients for all layers.
+    """
+
+    # Backward through classifier
+    classifier_grads = backward_classifier_block(
+        dlogits,
+        caches["classifier"]
+    )
+
+    # Gradient flowing into second conv block
+    d_block2 = classifier_grads["dx"]
+
+    # Backward through conv block 2
+    _, dW2, db2 = backward_conv_block(
+        d_block2,
+        caches["block2"]
+    )
+
+    # Gradient flowing into first conv block
+    d_block1 = caches["block2"]["conv_cache"]  # not needed directly
+    d_block1 = backward_conv_block(
+        d_block2,
+        caches["block2"]
+    )[0]
+
+    # Backward through conv block 1
+    _, dW1, db1 = backward_conv_block(
+        d_block1,
+        caches["block1"]
+    )
+
+    return {
+        "conv1": {
+            "dW": dW1,
+            "db": db1
+        },
+        "conv2": {
+            "dW": dW2,
+            "db": db2
+        },
+        "fc1": {
+            "dW": classifier_grads["fc1"]["dW"],
+            "db": classifier_grads["fc1"]["db"]
+        },
+        "fc2": {
+            "dW": classifier_grads["fc2"]["dW"],
+            "db": classifier_grads["fc2"]["db"]
+        }
+    }
 
 # Step 51 - lenet_predict (not yet solved)
 # TODO: implement
