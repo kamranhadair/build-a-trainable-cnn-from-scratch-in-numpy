@@ -1414,6 +1414,8 @@ def train_loop(
 
     return params, loss_history
 
-# Step 59 - evaluate (not yet solved)
-# TODO: implement
+# Step 59 - evaluate
+def evaluate(params, x, y):
+    logits, _ = lenet_forward(x, params)
+    return float(accuracy(logits, y))
 
