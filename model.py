@@ -576,8 +576,20 @@ def linear_grad_weights(x, d_out):
     dW = x.T @ d_out
     return dW
 
-# Step 32 - linear_grad_bias (not yet solved)
-# TODO: implement
+# Step 32 - linear_grad_bias
+import numpy as np
+
+def linear_grad_bias(d_out):
+    """
+    Compute the gradient with respect to the bias vector.
+
+    Args:
+        d_out: Upstream gradient of shape (N, D_out)
+
+    Returns:
+        db: Gradient with respect to bias, shape (D_out,)
+    """
+    return np.sum(d_out, axis=0)
 
 # Step 33 - linear_backward (not yet solved)
 # TODO: implement
