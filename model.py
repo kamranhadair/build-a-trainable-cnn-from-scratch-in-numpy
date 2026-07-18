@@ -704,8 +704,22 @@ def adam_update_v(v, grad, beta_two):
     """
     return beta_two * v + (1.0 - beta_two) * (grad ** 2)
 
-# Step 39 - adam_bias_correct (not yet solved)
-# TODO: implement
+# Step 39 - adam_bias_correct
+import numpy as np
+
+def adam_bias_correct(moment, beta, t):
+    """
+    Bias-correct an Adam moment estimate.
+
+    Args:
+        moment: First or second moment estimate.
+        beta: Decay rate (beta_one or beta_two).
+        t: Current timestep (starting from 1).
+
+    Returns:
+        Bias-corrected moment.
+    """
+    return moment / (1.0 - beta ** t)
 
 # Step 40 - adam_param_step (not yet solved)
 # TODO: implement
