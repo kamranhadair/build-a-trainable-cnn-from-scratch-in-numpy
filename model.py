@@ -456,8 +456,25 @@ def relu_forward(x):
 
     return out, cache
 
-# Step 26 - relu_backward (not yet solved)
-# TODO: implement
+# Step 26 - relu_backward
+import numpy as np
+
+def relu_backward(d_out, cache):
+    """
+    Backward pass for ReLU.
+
+    Args:
+        d_out: Upstream gradient of any shape.
+        cache: Dictionary from relu_forward containing 'x'.
+
+    Returns:
+        dx: Gradient with respect to the input.
+    """
+    x = cache["x"]
+
+    dx = d_out * (x > 0)
+
+    return dx
 
 # Step 27 - flatten_forward (not yet solved)
 # TODO: implement
