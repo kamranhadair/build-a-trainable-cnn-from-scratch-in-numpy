@@ -476,8 +476,27 @@ def relu_backward(d_out, cache):
 
     return dx
 
-# Step 27 - flatten_forward (not yet solved)
-# TODO: implement
+# Step 27 - flatten_forward
+import numpy as np
+
+def flatten_forward(x):
+    """
+    Forward pass for flatten layer.
+
+    Args:
+        x: Input of shape (N, C, H, W)
+
+    Returns:
+        out: Flattened output of shape (N, C*H*W)
+        cache: Dictionary containing the original input shape.
+    """
+    out = x.reshape(x.shape[0], -1)
+
+    cache = {
+        "x_shape": x.shape
+    }
+
+    return out, cache
 
 # Step 28 - flatten_backward (not yet solved)
 # TODO: implement
