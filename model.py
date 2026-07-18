@@ -541,8 +541,23 @@ def linear_forward(x, weights, bias):
 
     return out, cache
 
-# Step 30 - linear_grad_input (not yet solved)
-# TODO: implement
+# Step 30 - linear_grad_input
+import numpy as np
+
+def linear_grad_input(d_out, cache):
+    """
+    Compute gradient of the loss with respect to the input of a linear layer.
+
+    Args:
+        d_out: Upstream gradient of shape (N, D_out)
+        cache: Dictionary from linear_forward containing 'weights'
+
+    Returns:
+        dx: Gradient with respect to the input, shape (N, D_in)
+    """
+    weights = cache["weights"]
+    dx = d_out @ weights.T
+    return dx
 
 # Step 31 - linear_grad_weights (not yet solved)
 # TODO: implement
