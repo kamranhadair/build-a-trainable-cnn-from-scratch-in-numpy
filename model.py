@@ -615,8 +615,20 @@ def linear_backward(d_out, cache):
 
     return dx, dW, db
 
-# Step 34 - softmax_cross_entropy_forward (not yet solved)
-# TODO: implement
+# Step 34 - softmax_cross_entropy_forward
+import numpy as np
+
+def softmax_cross_entropy_forward(logits, y):
+    probs = stable_softmax(logits)
+    loss = cross_entropy_loss(probs, y)
+
+    loss = float(loss)
+
+    # Normalize -0.0 to +0.0
+    if loss == 0.0:
+        loss = 0.0
+
+    return loss
 
 # Step 35 - softmax_cross_entropy_backward (not yet solved)
 # TODO: implement
