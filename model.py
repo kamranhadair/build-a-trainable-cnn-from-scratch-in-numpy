@@ -1203,8 +1203,45 @@ def lenet_predict(x, params):
 
     return predictions.astype(int)
 
-# Step 52 - build_synthetic_image_dataset (not yet solved)
-# TODO: implement
+# Step 52 - build_synthetic_image_dataset
+import numpy as np
+
+def build_synthetic_image_dataset(num_samples, num_classes, image_size, in_channels=1, seed=None):
+    """
+    Build a small synthetic image dataset for CNN sanity checks.
+
+    Args:
+        num_samples: Number of images.
+        num_classes: Number of classes.
+        image_size: Height and width of each square image.
+        in_channels: Number of image channels.
+        seed: Random seed.
+
+    Returns:
+        x: Images of shape (num_samples, in_channels, image_size, image_size)
+        y: Integer labels of shape (num_samples,)
+    """
+    rng = np.random.default_rng(seed)
+
+    # Draw labels first
+    y = rng.integers(
+        0,
+        num_classes,
+        size=num_samples
+    )
+
+    # Draw image pixels
+    x = rng.standard_normal(
+        (num_samples, in_channels, image_size, image_size)
+    )
+
+    # Shift each class to make it linearly separable
+    shift_center = (num_classes - 1) / 2
+
+    for k in range(num_classes):
+        x[y == k] += k - shift_center
+
+    return x, y
 
 # Step 53 - shuffle_indices (not yet solved)
 # TODO: implement
