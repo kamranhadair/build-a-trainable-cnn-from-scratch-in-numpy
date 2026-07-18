@@ -1369,8 +1369,50 @@ def train_one_epoch(
 
     return params, opt_state, step_counter, losses
 
-# Step 58 - train_loop (not yet solved)
-# TODO: implement
+# Step 58 - train_loop
+def train_loop(
+    params,
+    x_train,
+    y_train,
+    num_epochs=1,
+    batch_size=32,
+    lr=1e-3,
+    beta_one=0.9,
+    beta_two=0.999,
+    eps=1e-8,
+    seed=0,
+):
+    # Initialize Adam optimizer state
+    opt_state = {}
+    for layer in params:
+        opt_state[layer] = {}
+        for pname in params[layer]:
+            opt_state[layer][pname] = {
+                "m": np.zeros_like(params[layer][pname]),
+                "v": np.zeros_like(params[layer][pname]),
+            }
+
+    step_counter = 0
+    loss_history = []
+
+    for epoch in range(num_epochs):
+        params, opt_state, step_counter, losses = train_one_epoch(
+            params=params,
+            opt_state=opt_state,
+            x=x_train,
+            y=y_train,
+            batch_size=batch_size,
+            lr=lr,
+            beta_one=beta_one,
+            beta_two=beta_two,
+            eps=eps,
+            step_counter=step_counter,
+            seed=seed + epoch,
+        )
+
+        loss_history.extend(losses)
+
+    return params, loss_history
 
 # Step 59 - evaluate (not yet solved)
 # TODO: implement
