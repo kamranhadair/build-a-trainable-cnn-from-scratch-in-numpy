@@ -938,8 +938,47 @@ def forward_conv_block(x, W, b, pool_size, stride, pad):
 
     return out, cache
 
-# Step 46 - forward_classifier_block (not yet solved)
-# TODO: implement
+# Step 46 - forward_classifier_block
+import numpy as np
+
+def forward_classifier_block(x, fc1, fc2):
+    """
+    Forward pass for the LeNet classifier head:
+    Flatten -> Linear -> ReLU -> Linear
+
+    Args:
+        x: Input feature map (N, C, H, W)
+        fc1: First fully-connected layer dict with 'W' and 'b'
+        fc2: Second fully-connected layer dict with 'W' and 'b'
+
+    Returns:
+        logits: Final class scores
+        cache: Dictionary containing all sublayer caches
+    """
+    flat, flatten_cache = flatten_forward(x)
+
+    fc1_out, fc1_cache = linear_forward(
+        flat,
+        fc1["W"],
+        fc1["b"]
+    )
+
+    relu_out, relu_cache = relu_forward(fc1_out)
+
+    logits, fc2_cache = linear_forward(
+        relu_out,
+        fc2["W"],
+        fc2["b"]
+    )
+
+    cache = {
+        "flatten_cache": flatten_cache,
+        "fc1_cache": fc1_cache,
+        "relu_cache": relu_cache,
+        "fc2_cache": fc2_cache
+    }
+
+    return logits, cache
 
 # Step 47 - lenet_forward (not yet solved)
 # TODO: implement
