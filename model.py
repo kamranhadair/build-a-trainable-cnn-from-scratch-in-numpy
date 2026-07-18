@@ -1068,8 +1068,57 @@ def backward_conv_block(dout, cache):
 
     return dx, dW, db
 
-# Step 49 - backward_classifier_block (not yet solved)
-# TODO: implement
+# Step 49 - backward_classifier_block
+import numpy as np
+
+def backward_classifier_block(dout, cache):
+    """
+    Backward pass for classifier block:
+    Flatten -> FC1 -> ReLU -> FC2
+
+    Returns:
+        {
+            'dx': gradient into input feature map,
+            'fc1': {'dW': ..., 'db': ...},
+            'fc2': {'dW': ..., 'db': ...}
+        }
+    """
+
+    # FC2 backward
+    d_relu, dW2, db2 = linear_backward(
+        dout,
+        cache["fc2_cache"]
+    )
+
+    # ReLU backward
+    d_fc1, = (relu_backward(
+        d_relu,
+        cache["relu_cache"]
+    ),)
+
+    # FC1 backward
+    d_flat, dW1, db1 = linear_backward(
+        d_fc1,
+        cache["fc1_cache"]
+    )
+
+    # Flatten backward
+    dx = flatten_backward(
+        d_flat,
+        cache["flatten_cache"]
+    )
+
+    return {
+        "dx": dx,
+        "fc1": {
+            "dW": dW1,
+            "db": db1
+        },
+        "fc2": {
+            "dW": dW2,
+            "db": db2
+        }
+    }
 
 # Step 50 - lenet_backward (not yet solved)
 # TODO: implement
