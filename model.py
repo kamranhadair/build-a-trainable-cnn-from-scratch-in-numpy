@@ -774,8 +774,39 @@ def adam_step(param, grad, m, v, t, lr, beta_one, beta_two, eps):
 
     return new_param, new_m, new_v
 
-# Step 42 - init_conv_layer (not yet solved)
-# TODO: implement
+# Step 42 - init_conv_layer
+import numpy as np
+
+def init_conv_layer(out_channels, in_channels, kernel_size, seed=None):
+    """
+    Initialize a convolutional layer using He initialization.
+
+    Args:
+        out_channels: Number of output channels.
+        in_channels: Number of input channels.
+        kernel_size: Size of the (square) convolution kernel.
+        seed: Optional random seed.
+
+    Returns:
+        Dictionary with keys:
+            'W': Convolution weights of shape
+                 (out_channels, in_channels, kernel_size, kernel_size)
+            'b': Bias vector of shape (out_channels,)
+    """
+    fan_in = in_channels * kernel_size * kernel_size
+
+    W = he_init(
+        (out_channels, in_channels, kernel_size, kernel_size),
+        fan_in,
+        seed
+    )
+
+    b = init_zero_bias(out_channels)
+
+    return {
+        "W": W,
+        "b": b
+    }
 
 # Step 43 - init_linear_layer (not yet solved)
 # TODO: implement
