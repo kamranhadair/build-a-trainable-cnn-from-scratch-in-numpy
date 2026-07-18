@@ -670,8 +670,22 @@ def sgd_step(param, grad, learning_rate):
     """
     return param - learning_rate * grad
 
-# Step 37 - adam_update_m (not yet solved)
-# TODO: implement
+# Step 37 - adam_update_m
+import numpy as np
+
+def adam_update_m(m, grad, beta_one):
+    """
+    Update Adam's first moment estimate.
+
+    Args:
+        m: Previous first moment.
+        grad: Current gradient.
+        beta_one: Exponential decay rate for the first moment.
+
+    Returns:
+        Updated first moment.
+    """
+    return beta_one * m + (1.0 - beta_one) * grad
 
 # Step 38 - adam_update_v (not yet solved)
 # TODO: implement
