@@ -1281,8 +1281,58 @@ def iterate_minibatches(x, y, batch_size, seed):
 
         yield xb, yb
 
-# Step 56 - train_step (not yet solved)
-# TODO: implement
+# Step 56 - train_step
+def train_step(params, opt_state, xb, yb, lr, beta1, beta2, eps, t):
+    # Forward
+    logits, cache = lenet_forward(xb, params)
+
+    # Loss
+    loss = softmax_cross_entropy_forward(logits, yb)
+
+    # Backward
+    dlogits = softmax_cross_entropy_backward(logits, yb)
+    grads = lenet_backward(dlogits, cache)
+
+    new_params = {}
+    new_opt_state = {}
+
+    for layer in params:
+        new_params[layer] = {}
+        new_opt_state[layer] = {}
+
+        # Weights
+        W, mW, vW = adam_step(
+            params[layer]["W"],
+            grads[layer]["dW"],
+            opt_state[layer]["W"]["m"],
+            opt_state[layer]["W"]["v"],
+            t,
+            lr,
+            beta1,
+            beta2,
+            eps,
+        )
+
+        # Bias
+        b, mb, vb = adam_step(
+            params[layer]["b"],
+            grads[layer]["db"],
+            opt_state[layer]["b"]["m"],
+            opt_state[layer]["b"]["v"],
+            t,
+            lr,
+            beta1,
+            beta2,
+            eps,
+        )
+
+        new_params[layer]["W"] = W
+        new_params[layer]["b"] = b
+
+        new_opt_state[layer]["W"] = {"m": mW, "v": vW}
+        new_opt_state[layer]["b"] = {"m": mb, "v": vb}
+
+    return new_params, new_opt_state, loss
 
 # Step 57 - train_one_epoch (not yet solved)
 # TODO: implement
