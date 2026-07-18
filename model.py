@@ -1183,8 +1183,25 @@ def lenet_backward(dlogits, caches):
         }
     }
 
-# Step 51 - lenet_predict (not yet solved)
-# TODO: implement
+# Step 51 - lenet_predict
+import numpy as np
+
+def lenet_predict(x, params):
+    """
+    Predict class labels using LeNet.
+
+    Args:
+        x: Input batch of images, shape (N, C, H, W)
+        params: LeNet parameters dictionary
+
+    Returns:
+        predictions: Integer class labels of shape (N,)
+    """
+    logits, _ = lenet_forward(x, params)
+
+    predictions = np.argmax(logits, axis=1)
+
+    return predictions.astype(int)
 
 # Step 52 - build_synthetic_image_dataset (not yet solved)
 # TODO: implement
