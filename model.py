@@ -838,8 +838,61 @@ def init_linear_layer(in_features, out_features, seed=None):
         "b": b
     }
 
-# Step 44 - init_lenet (not yet solved)
-# TODO: implement
+# Step 44 - init_lenet
+import numpy as np
+
+def init_lenet(in_channels, num_classes, seed=None):
+    """
+    Initialize a LeNet-style network.
+
+    Architecture:
+        Conv1: 6 filters, 5x5 kernel
+        Conv2: 16 filters, 5x5 kernel
+        FC1: 120 units
+        FC2: num_classes units
+
+    Args:
+        in_channels: Number of input image channels.
+        num_classes: Number of output classes.
+        seed: Base random seed.
+
+    Returns:
+        Dictionary containing all layer parameters.
+    """
+    if seed is None:
+        seeds = [None, None, None, None]
+    else:
+        seeds = [seed, seed + 1, seed + 2, seed + 3]
+
+    params = {
+        "conv1": init_conv_layer(
+            out_channels=6,
+            in_channels=in_channels,
+            kernel_size=5,
+            seed=seeds[0]
+        ),
+
+        "conv2": init_conv_layer(
+            out_channels=16,
+            in_channels=6,
+            kernel_size=5,
+            seed=seeds[1]
+        ),
+
+        "fc1": init_linear_layer(
+            in_features=16 * 4 * 4,
+            out_features=120,
+            seed=seeds[2]
+        ),
+
+        "fc2": init_linear_layer(
+            in_features=120,
+            out_features=num_classes,
+            seed=seeds[3]
+        )
+    }
+
+    return params
 
 # Step 45 - forward_conv_block (not yet solved)
 # TODO: implement
