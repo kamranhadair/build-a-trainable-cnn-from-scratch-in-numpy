@@ -516,8 +516,30 @@ def flatten_backward(d_out, cache):
     dx = d_out.reshape(x_shape)
     return dx
 
-# Step 29 - linear_forward (not yet solved)
-# TODO: implement
+# Step 29 - linear_forward
+import numpy as np
+
+def linear_forward(x, weights, bias):
+    """
+    Forward pass for a fully-connected (linear) layer.
+
+    Args:
+        x: Input of shape (N, D_in)
+        weights: Weight matrix of shape (D_in, D_out)
+        bias: Bias vector of shape (D_out,)
+
+    Returns:
+        out: Output of shape (N, D_out)
+        cache: Dictionary containing x and weights.
+    """
+    out = x @ weights + bias
+
+    cache = {
+        "x": x,
+        "weights": weights
+    }
+
+    return out, cache
 
 # Step 30 - linear_grad_input (not yet solved)
 # TODO: implement
