@@ -687,8 +687,22 @@ def adam_update_m(m, grad, beta_one):
     """
     return beta_one * m + (1.0 - beta_one) * grad
 
-# Step 38 - adam_update_v (not yet solved)
-# TODO: implement
+# Step 38 - adam_update_v
+import numpy as np
+
+def adam_update_v(v, grad, beta_two):
+    """
+    Update Adam's second moment estimate.
+
+    Args:
+        v: Previous second moment.
+        grad: Current gradient.
+        beta_two: Exponential decay rate for the second moment.
+
+    Returns:
+        Updated second moment.
+    """
+    return beta_two * v + (1.0 - beta_two) * (grad ** 2)
 
 # Step 39 - adam_bias_correct (not yet solved)
 # TODO: implement
